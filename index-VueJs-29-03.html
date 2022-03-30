@@ -6,9 +6,11 @@
 </head>
 <body>
 <div id="app">
-    First name: <input type="text">
-    Last name: <input type="text">
-    <button>Add user</button>
+    <div @keyup.enter="addUserOnEnter" style="display: inline-block;" >
+      First name: <input type="text" v-model="firstName">
+      Last name: <input type="text" v-model="lastName">
+    </div>
+    <button @click="addUserOnClick">Add user</button>
 
     <table>
         <caption>Users</caption>
@@ -20,17 +22,41 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>1</td>
-            <td>John</td>
-            <td>Doe</td>
+        <tr v-for="user, i in users" :key="i">
+            <td>{{i+1}}</td>
+            <td>{{user.firstName}}</td>
+            <td>{{user.lastName}}</td>
         </tr>
         </tbody>
     </table>
 </div>
 <script>
     var vm = new Vue({
-        el: '#app'
+        el: '#app',
+        data: {
+          title: 'Some title',
+          firstName: '',
+          lastName: '',
+          users: [{firstName: 'John', lastName: 'Doe'}]
+        },
+        methods: {
+          addUserOnClick: function () {
+            this.addUser()
+          },
+          addUserOnEnter: function () {
+            this.addUser()
+          },
+          addUser: function () {
+            if (this.firstName && this.lastName) {
+              this.users.push({
+                'firstName': this.firstName,
+                'lastName': this.lastName
+              })
+              this.firstName = ''
+              this.lastName = ''
+            }
+          }
+        }
     });
 </script>
 </body>
